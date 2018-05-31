@@ -6,7 +6,7 @@
 //   -- launch
 //   -- publish
 
-def populateEnvironment load('ci/cray/populateEnvironment.groovy')
+def populateEnvironment = load('ci/cray/populateEnvironment.groovy')
 def checkAssertions = load('ci/cray/checkAssertions.groovy')
 def buildTemporary = load('ci/cray/buildTemporary.groovy')
 def testUnit = load('ci/cray/testUnit.groovy')
