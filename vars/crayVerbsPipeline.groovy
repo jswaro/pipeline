@@ -40,15 +40,21 @@ def call(Map pipelineParams) {
             stage('Prepare') {
                 steps {
                     echo "[populating environment]"
-                    populateEnvironment 
+                    script {
+                        populateEnvironment 
+                    }
 
                     echo "[checking assertions]"
-                    checkAssertions
+                    script {
+                        checkAssertions
+                    }
                 }
             }
             stage('Build') {
                 steps {
-                    buildTemporary
+                    script {
+                        buildTemporary
+                    }
                 }
             }
             stage('Test: Phase 1') {
@@ -56,7 +62,9 @@ def call(Map pipelineParams) {
                 parallel {
                     stage('Unit tests') {
                         steps {
-                            testUnit
+                            script {
+                                testUnit
+                            }
                         }
                     }
                     stage('Smoke tests') {
@@ -64,12 +72,16 @@ def call(Map pipelineParams) {
                             LD_LIBRARY_PATH = "$TMP_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
                         }
                         steps {
-                            testSmoke
+                            script {
+                                testSmoke
+                            }
                         }
                     }
                     stage('Functional tests') {
                         steps {
-                            testFunctional
+                            script {
+                                testFunctional
+                            }
                         }
                     }
                     stage('Fabtests') {
@@ -77,14 +89,18 @@ def call(Map pipelineParams) {
                             LD_LIBRARY_PATH = "$TMP_INSTALL_PATH/lib:$LD_LIBRARY_PATH"
                         }
                         steps {
-                            testFabtests
+                            script {
+                                testFabtests
+                            }
                         }
                     }
                 }
             }
             stage("Deploy: Install") {
                 steps {
-                    deployInstall
+                    script {
+                        deployInstall
+                    }
                 }
             }
             stage("Deploy: latest") {
@@ -92,7 +108,9 @@ def call(Map pipelineParams) {
                     expression { env.BRANCH_NAME == 'master' }
                 }
                 steps {
-                    deployLatest
+                    script {
+                        deployLatest
+                    }
                 }
             }
             stage("Test: Phase 2") {
@@ -108,7 +126,9 @@ def call(Map pipelineParams) {
                             MPIR_CVAR_OFI_USE_PROVIDER = 'verbs'
                         }
                         steps {
-                            testApplication
+                            script {
+                                testApplication
+                            }
                         }
                     }
                 }
@@ -118,7 +138,9 @@ def call(Map pipelineParams) {
                     expression { env.BRANCH_NAME == 'master' }
                 }
                 steps {
-                    deployStable
+                    script {
+                        deployStable
+                    }
                 }
             }
             stage("Deploy: Tags") {
@@ -126,7 +148,9 @@ def call(Map pipelineParams) {
                     buildingTag()
                 }
                 steps {
-                    deployTags
+                    script {
+                        deployTags
+                    }
                 }
            }
         }
