@@ -42,7 +42,7 @@ def call(Map pipelineParams) {
                     echo "[populating environment]"
                     populateEnvironment 
 
-                    echo "[checking assertions]
+                    echo "[checking assertions]"
                     checkAssertions
                 }
             }
