@@ -118,7 +118,9 @@ def call(Map pipelineParams) {
                 parallel {
                     stage("System tests") {
                         steps {
-                            testSystem
+                            script {
+                                testSystem
+                            }
                         }
                     }
                     stage("Application tests") {
@@ -157,7 +159,7 @@ def call(Map pipelineParams) {
         environment {
             GIT_SHORT_COMMIT = "$GIT_COMMIT"
             TMP_INSTALL_PATH = pwd tmp: true
-            ROOT_BUILD_PATH = pipelineParams.ROOT_BUILD_PATH
+            ROOT_BUILD_PATH = "pipelineParams.ROOT_BUILD_PATH"
             FABTEST_PATH = "${ROOT_BUILD_PATH + '/fabtests/stable'}"
             LIBFABRIC_BUILD_PATH = "${ROOT_BUILD_PATH + '/libfabric'}"
             OMB_BUILD_PATH = "${ROOT_BUILD_PATH + '/osu-micro-benchmarks/5.4.2/libexec/osu-micro-benchmarks/mpi'}"
